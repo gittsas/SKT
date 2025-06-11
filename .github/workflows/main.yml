@@ -1,31 +1,19 @@
-name: Build Project
-
-on: [push] # Запускать при каждом push
+name: Build
+on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest # Используем Windows-агент
-    
+    runs-on: self-hosted
+
     steps:
-    # Шаг 1: Загрузка кода
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
     
-    # Шаг 2: Установка MSVC (ваш код)
-    - name: Setup MSVC
-      uses: ms-vssetup/actions/v1@v1
-      with:
-        installPath: 'C:\Program Files\Microsoft Visual Studio\2022\Community'
-        components: Microsoft.VisualStudio.Component.VC.Tools.x86.x64
-    
-    # Шаг 3: Настройка окружения компилятора
-    - name: Configure Developer Command Prompt
-      uses: ilammy/msvc-dev-cmd@v1
-      with:
-        arch: x64 # или x86/arm64
-    
-    # Шаг 4: Ваши команды сборки
-    - name: Build project
-      run: |
-        cmake -B build -S .
-        cmake --build build --config Release
+      - name: setup msvc
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: CMake generate
+        run: cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build Project
+        run: cmake --build build --config Release --target GravityGUI
