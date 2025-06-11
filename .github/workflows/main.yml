@@ -1,19 +1,29 @@
-name: Build
+name: Build Project
+
 on: [push]
 
 jobs:
   build:
-    runs-on: self-hosted
-
-    steps:
-      - uses: actions/checkout@v4
-
+    runs-on: windows-latest
     
-      - name: setup msvc
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: CMake generate
-        run: cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
-
-      - name: Build Project
-        run: cmake --build build --config Release --target GravityGUI
+    steps:
+    # Шаг 1: Скачивание кода
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    # Шаг 2: Установка Visual Studio компонентов
+    - name: Install Visual Studio Components
+      run: |
+        choco install visualstudio2022-workload-vctools -y
+        
+    # Шаг 3: Настройка окружения
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+        
+    # Шаг 4: Сборка проекта
+    - name: Build
+      run: |
+        cmake -B build -S .
+        cmake --build build --config Release
