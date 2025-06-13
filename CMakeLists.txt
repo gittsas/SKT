@@ -4,8 +4,11 @@ project(GravityGUI)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-# Указываем путь к SFML (только один раз!)
-set(SFML_DIR "C:/Users/Vlad/Desktop/SFML-2.6.0/lib/cmake/SFML")  # Обратите внимание на / вместо \
+if(NOT DEFINED SFML_DIR)
+    set(SFML_DIR "$ENV{SFML_DIR}/lib/cmake/SFML")
+endif()
+
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system audio)
 
 # Ищем SFML перед добавлением исполняемого файла
 find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system audio)
