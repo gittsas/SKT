@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME}
 
 set(SFML_DIR "external/SFML-2.6.0/lib/cmake/SFML")
 set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR "C:\Users\Vlad\Desktop/SFML-2.6.0/lib/cmake/SFML")  
+find_package(SFML 2.6 REQUIRED COMPONENTS graphics window system)
 find_package(SFML 2.6 COMPONENTS graphics audio REQUIRED)
 if(SFML_FOUND)
 	include_directories(${SFML_INCLUDE_DIR})
